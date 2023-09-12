@@ -24,7 +24,11 @@ Refresh the page to go back to the menu.
 # Publishing
 
 Open publish.html and copy the text.
+
 Use https://www.uglifyjs.net on all javascript code (below the html code).
+
 Replace all scripts in the html code with the minified code.
+
 Move the copyright info to the script.
+
 Leave everything in the one file
