@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Medieval Matchup</title>
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAgMAAABinRfyAAAADFBMVEUAAAD///9MzgD/agDH7lxmAAAAAXRSTlMAQObYZgAAACxJREFUCNdjYA0NDWAQDQ0NYYj//zUUStSiElWrljKERoGJTEwCCMAGgI0CALGIHFWGAp68AAAAAElFTkSuQmCC">      
+    
+    <script src="https://aframe.io/releases/1.4.2/aframe.js"></script>
+    
+    <script>
+      "use strict";
+      
+      // Force the page to HTTPS
+      if (location.protocol != 'https:'){location.href = 'https:' + location.href.substring(window.location.protocol.length);}
+      
+      // Define the MMU object to which we can attach global stuff for the game like models and settings
+      var MMU = {};
+    </script>
+
+    <script src="helpers/componenthelper.js"></script>
+    <script src="helpers/fps-counter.js"></script>
+    <script src="helpers/show-on-move.js"></script>
+    <script src="helpers/show-on-enter-ar.js"></script>
+
+    <script src="environment/island.js"></script>
+    <script src="environment/graincreator.js"></script>
+    <script src="environment/seagull.js"></script>
+    <script src="environment/watershader.js"></script>
+    <script src="environment/soundofwaves.js"></script>
+
+    <script src="stones/stonegeometry.js"></script>
+    <script src="stones/stonematerial.js"></script>
+    <script src="stones/patterncreator.js"></script>    
+    
+    <script src="models/models.js"></script>
+    <script src="models/model.js"></script>
+    <script src="models/meshgenerator.js"></script>
+
+    <script src="gameplay/menu.js"></script>
+    <script src="gameplay/settings.js"></script>
+    <script src="gameplay/orchestrator.js"></script>
+    <script src="gameplay/level.js"></script>
+    <script src="gameplay/clicker.js"></script>
+    <script src="gameplay/rotator.js"></script>
+
+    <script>
+             
+    </script>
+    
+    <style>
+      .a-canvas.a-grab-cursor:hover { cursor:default !important }
+      .a-canvas.a-grab-cursor:active,.a-grabbing { cursor:default !important }
+    </style>
+    
+  </head>
+  <body>
+
+    <a-scene id="scene" renderer="colorManagement: true;" light="defaultLightsEnabled: false" shadow="type:pcfsoft;">
+      
+      <a-sky hide-on-enter-ar src="url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAgCAYAAADT5RIaAAAAAXNSR0IArs4c6QAAADZJREFUGFdjUFuz7z8DmYT2uv3/GUL2nfnPUHv2xn+G5Xef/mc4/+bDf4aff//+Z/j//z/lBACQnGoWboVOzgAAAABJRU5ErkJggg==)"></a-sky>
+      
+      <a-entity light="type: ambient; color: #555"></a-entity>
+      <a-entity light="type: directional; color: #FFF; intensity: 1; castShadow:true; shadowCameraAutomatic:#island;" position="-1 1 1"></a-entity>      
+      
+      <a-entity id="levelrig">
+        <a-entity id="level" level clicker rotator></a-entity>
+      </a-entity>
+      
+      <a-entity id="rig">
+        <a-entity id="menu" menu position="0 1.6 0">
+          <a-sphere color="#000" radius="2" material="side:back; opacity:0.4; shader:flat;"></a-sphere>
+        </a-entity>      
+        <a-entity camera id="camera" position="0 1.6 0" look-controlszzz wasd-controlszzz="fly:true;acceleration:10;">
+          <a-text fps-counterzzz position="0 -0.1 -0.25" width="0.25"></a-text>
+        </a-entity>
+        
+        <a-entity id="controllerLeft" oculus-touch-controls="hand:left; model:false;" show-on-move>
+          <a-entity model="level:QuestController;yoffset:1;" scale="0.05 0.05 0.05"></a-entity>
+          <a-entity id="raycasterLeft" raycaster="objects:no_auto_intersects; showLine:true; lineColor:white; lineOpacity:0.5, interval:250;" rotation="-45 0 0" position="0 -0.065 -0.06"></a-entity>
+        </a-entity>
+        
+        <a-entity id="controllerRight" oculus-touch-controls="hand:right; model:false;" show-on-move>
+          <a-entity model="level:QuestController;yoffset:1;" scale="0.05 0.05 0.05"></a-entity>
+          <a-entity id="raycasterRight" raycaster="objects:.no_auto_intersects; showLine:true; lineColor:white; lineOpacity:0.5, interval:250;" rotation="-45 0 0" position="0 -0.065 -0.06"></a-entity>
+        </a-entity>
+        
+        <a-entity id="controllerGo" oculus-go-controls="hand:right; armModel:true; model:false;" position="0 -1 -0.25" show-on-move>
+          <a-entity model="level:GoController" scale="0.05 0.05 0.05" rotation="20 0 0" >
+            <a-entity id="raycasterGo" raycaster="objects:.no_auto_intersects; showLine:true; lineColor:white; lineOpacity:0.5, interval:250;" position="0 0.25 0"></a-entity>
+          </a-entity>
+        </a-entity>      
+      </a-entity>
+
+      <a-entity id="island" island position="0 -0.5 0" shadow="receive:true;"></a-entity>
+      <a-entity id="visiblemodels"></a-entity>
+      <a-ring hide-on-enter-ar radius-inner="9" radius-outer="200" rotation="-90 0 0" material="shader:water;"></a-ring>
+      <a-ring show-on-enter-ar radius-inner="9" radius-outer="20" rotation="-90 0 0" material="shader:water;"></a-ring>
+
+      <a-entity position="-3 5 10" scale="0.1 0.1 0.1" 
+                animation__rotate="property: rotation; from: 0 0 0; to: 0 360 0; loop: true; dur: 10000; easing:linear;">
+        <a-entity seagull position="-25 0 0" rotation="0 0 -15"
+                  animation__updown="property: object3D.position.y; from:0; to:4; loop:true; dir:alternate; dur:1000; easing:easeInOutSine;">
+        </a-entity>
+        <a-entity seagull position="25 0 0" rotation="0 180 -15"
+                  animation__updown="property: object3D.position.y; from:4; to:0; loop:true; dir:alternate; dur:1300; easing:easeInOutSine;">
+        </a-entity>
+      </a-entity>
+      <a-entity position="6 8 3" scale="0.1 0.1 0.1" animation="property: rotation; from: 0 270 0; to: 0 -90 0; loop: true; dur: 10000; easing:linear;">
+        <a-entity seagull position="-25 0 0" rotation="0 180 15"
+                  animation__updown="property: object3D.position.y; from:0; to:4; loop:true; dir:alternate; dur:900; easing:easeInOutSine;">
+        </a-entity>
+        <a-entity seagull position="25 0 0" rotation="0 0 15"
+                  animation__updown="property: object3D.position.y; from:4; to:0; loop:true; dir:alternate; dur:1100; easing:easeInOutSine;">
+        </a-entity>
+      </a-entity>
+      
+      <a-entity id="orchestrator" orchestrator></a-entity>
+      
+    </a-scene>
+
+    <script>
+
+      // Set the environment map for standard materials without a specific environment map
+      // Simple tiny (64 x 32 size texture) smaller does not work!?
+      let scene = document.getElementById('scene');
+      let environment = new THREE.TextureLoader().load("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgBAMAAABQs2O3AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJUExURYCAgAAAAP///z6loLUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAtSURBVDjLY2AUYGBgUmDASRNWgF8aRBNSQKl+BmKcSUDBaDiMhsNoOKDRTAoAk+wZgR6ayGIAAAAASUVORK5CYII=");
+      environment.encoding = THREE.sRGBEncoding;
+      environment.mapping = THREE.EquirectangularReflectionMapping;
+      scene.object3D.environment = environment;
+
+    </script> 
+
+  </body> 
+
+</html>

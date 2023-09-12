@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Publish Medieval Matchup</title>
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAgMAAABinRfyAAAADFBMVEUAAAD///9MzgD/agDH7lxmAAAAAXRSTlMAQObYZgAAACxJREFUCNdjYA0NDWAQDQ0NYYj//zUUStSiElWrljKERoGJTEwCCMAGgI0CALGIHFWGAp68AAAAAElFTkSuQmCC">  
+    
+  </head>
+  <body>
+    <pre id="result"></pre>
+  </body> 
+                      
+  <script>
+    
+    const MINIFY = true;
+
+    let files = [
+      "index.html",
+      
+      "helpers/componenthelper.js",
+      "helpers/fps-counter.js",
+      "helpers/show-on-move.js",
+      "helpers/show-on-enter-ar.js",
+
+      "environment/island.js",
+      "environment/graincreator.js",
+      "environment/seagull.js",
+      "environment/watershader.js",
+      "environment/soundofwaves.js",
+
+      "stones/stonegeometry.js",
+      "stones/stonematerial.js",
+      "stones/patterncreator.js",    
+    
+      "models/models.js",
+      "models/model.js",
+      "models/meshgenerator.js",
+
+      "gameplay/menu.js",
+      "gameplay/settings.js",
+      "gameplay/orchestrator.js",
+      "gameplay/level.js",
+      "gameplay/clicker.js",
+      "gameplay/rotator.js"
+    ];
+    
+    // Minify these function names for extra small code
+    var ABBRIVIATE = `
+      BACKGROUND
+      bigCircles
+      bigSquares
+      border
+      boundaryCircle
+      centerSquare
+      _checkRaycaster
+      circle
+      circleParts  
+      cornerCircles1to3
+      cornerCircles4
+      cornerSquares1to3
+      cornerSquares4
+      create
+      createBorders
+      _createInstancedMeshes
+      _createLevel
+      _createMesh
+      createModels
+      createNormalMap
+      _createOriginalMaterial
+      _createPatterns
+      _createStone
+      _createStones
+      _destroy
+      diceCircles
+      diceCirclesReversed
+      diceSquaresReversed
+      _ding
+      direction
+      distance
+      distancex
+      distancey
+      divisions
+      EMPTY
+      getCanvas
+      getHeight
+      getImageUrl
+      getMaterial
+      GrainCreator
+      isCleared
+      _loadTexture
+      maxCount
+      menuItemPlay
+      menuItemReset
+      meshes
+      models
+      nearest
+      nearestx
+      nearesty
+      newMaterial
+      nextLevel
+      nextTile
+      noiseFunctions
+      NOMAP
+      _onAxisMove
+      _onClickGo
+      _onClickLeft
+      _onClickRight
+      _onClickScreen
+      _onMenuItemSelected
+      _onMouseDown
+      _onMouseMove
+      _onMouseUp
+      onObjectSelected
+      _onStoneSelected
+      _onThumbstickMoved
+      originalMaterial
+      PATTERN
+      PatternCreator
+      patternCreator
+      patternIndex
+      pointer
+      radius
+      raycasterScreen
+      render
+      renderCopy
+      rotatedSquare
+      _rotateOnControls
+      ROUNDING
+      setCleared
+      _setColors
+      setTile
+      settings
+      _setup
+      _setUpCamera
+      _setUpLevelAndCamera
+      shaderVariables
+      sideCircles1to3
+      sideCircles4
+      _sort
+      square
+      startWaves
+      stoneEmissive
+      StoneGeometry
+      StoneMaterial
+      stoneNormals
+      stonePatterns
+      stoneRoughness
+      stonesLeft
+      tileCount
+      toBrightness
+      triangleCorners1to3
+      triangleCorners4
+      triCorner
+      visibleModels
+      voxel
+      voxels
+      waves  
+      wavesaudioContext  
+    `;    
+    
+  </script>
+
+  <script src="publish.js"></script>
+  
+  <script>
+
+    let result = "/**************************************\\\r\n" +
+                 "*       Entry for j213KGames          *\r\n" +
+                 "* Copyright (c) " + new Date().getFullYear() + " Samuel Van Egmond *\r\n" +
+                 "*           MIT License                *\r\n" +
+                 "\\**************************************/\r\n" +
+                 "\r\n" +
+                 "/* global AFRAME */\r\n" +
+                 "/* global THREE */\r\n" +
+                 "\r\n" +
+                 "\"use strict\";\r\n";
+    
+    // Convert the files
+    convertFiles(files); 
+  
+  </script>
+</html>
+
+
